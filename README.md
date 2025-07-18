@@ -69,3 +69,13 @@ chmod +x build.sh
 You can modify the resolution, voxel sizes, minDepth, maxDepth in the 'OccupancyGridBuilder.h' or 'OccupancyGridBuilder.cc' as per your requirement or preference, it doesn't affect the occupancy building ability rather customize it to your preference.
 
 **You can find the tested examples in the repo directory under 'docs/'**
+
+# 4. Community and ROS 2 Contribution
+
+This extension has been shared with the ROS 2 community. You can find the official contribution post and community discussion here:
+
+[ORB-SLAM3 Extension: Real-Time Sparse Map to Occupancy Grid (.yaml/.pgm) for ROS 2 Navigation](https://discourse.openrobotics.org/t/orb-slam3-extension-real-time-sparse-map-to-occupancy-grid-yaml-pgm-for-ros-2-navigation/49158?u=harishma356)
+
+Feel free to contribute, raise issues, or suggest improvements!
+
+

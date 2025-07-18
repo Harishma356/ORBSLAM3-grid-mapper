@@ -154,6 +154,9 @@ public:
     // DEBUG: show KFs which are used in LBA
     std::set<long unsigned int> msOptKFs;
     std::set<long unsigned int> msFixedKFs;
+    
+    //get keyframe
+    KeyFrame* GetLastKeyFrame();
 
 protected:
 

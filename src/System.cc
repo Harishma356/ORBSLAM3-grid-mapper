@@ -20,6 +20,7 @@
 
 #include "System.h"
 #include "Converter.h"
+#include "OccupancyGridBuilder.h"
 #include <thread>
 #include <pangolin/pangolin.h>
 #include <iomanip>
@@ -52,6 +53,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     "under certain conditions. See LICENSE.txt." << endl << endl;
 
     cout << "Input sensor was set to: ";
+    
+    mpOccupancyBuilder = nullptr;
+    mpOccupancyThread = nullptr;
+
 
     if(mSensor==MONOCULAR)
         cout << "Monocular" << endl;
@@ -389,6 +394,19 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
     Sophus::SE3f Tcw = mpTracker->GrabImageRGBD(imToFeed,imDepthToFeed,timestamp,filename);
 
+    //Sophus::SE3f Tcw = mpTracker->GrabImageMonocular(imToFeed,timestamp,filename);
+
+// Safe to launch OccupancyGridBuilder now
+if (!mpOccupancyBuilder && mpAtlas) {
+    Map* pCurrentMap = mpAtlas->GetCurrentMap();
+    if (pCurrentMap && pCurrentMap->KeyFramesInMap() > 0) {
+        std::cout << "[System] Starting OccupancyGridBuilder..." << std::endl;
+        mpOccupancyBuilder = new OccupancyGridBuilder(mpAtlas->GetCurrentMap());
+        mpOccupancyThread = new std::thread(&OccupancyGridBuilder::Run, mpOccupancyBuilder);
+    }
+}
+
+
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
@@ -396,46 +414,39 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
     return Tcw;
 }
 
+//
 Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
-
     {
         unique_lock<mutex> lock(mMutexReset);
-        if(mbShutDown)
+        if (mbShutDown)
             return Sophus::SE3f();
     }
 
-    if(mSensor!=MONOCULAR && mSensor!=IMU_MONOCULAR)
+    if (mSensor != MONOCULAR && mSensor != IMU_MONOCULAR)
     {
         cerr << "ERROR: you called TrackMonocular but input sensor was not set to Monocular nor Monocular-Inertial." << endl;
         exit(-1);
     }
 
     cv::Mat imToFeed = im.clone();
-    if(settings_ && settings_->needToResize()){
+    if (settings_ && settings_->needToResize()) {
         cv::Mat resizedIm;
-        cv::resize(im,resizedIm,settings_->newImSize());
+        cv::resize(im, resizedIm, settings_->newImSize());
         imToFeed = resizedIm;
     }
 
     // Check mode change
     {
         unique_lock<mutex> lock(mMutexMode);
-        if(mbActivateLocalizationMode)
-        {
+        if (mbActivateLocalizationMode) {
             mpLocalMapper->RequestStop();
-
-            // Wait until Local Mapping has effectively stopped
-            while(!mpLocalMapper->isStopped())
-            {
+            while (!mpLocalMapper->isStopped())
                 usleep(1000);
-            }
-
             mpTracker->InformOnlyTracking(true);
             mbActivateLocalizationMode = false;
         }
-        if(mbDeactivateLocalizationMode)
-        {
+        if (mbDeactivateLocalizationMode) {
             mpTracker->InformOnlyTracking(false);
             mpLocalMapper->Release();
             mbDeactivateLocalizationMode = false;
@@ -445,14 +456,12 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
     // Check reset
     {
         unique_lock<mutex> lock(mMutexReset);
-        if(mbReset)
-        {
+        if (mbReset) {
             mpTracker->Reset();
             mbReset = false;
             mbResetActiveMap = false;
         }
-        else if(mbResetActiveMap)
-        {
+        else if (mbResetActiveMap) {
             cout << "SYSTEM-> Reseting active map in monocular case" << endl;
             mpTracker->ResetActiveMap();
             mbResetActiveMap = false;
@@ -460,11 +469,21 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
     }
 
     if (mSensor == System::IMU_MONOCULAR)
-        for(size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
+        for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
             mpTracker->GrabImuData(vImuMeas[i_imu]);
 
-    Sophus::SE3f Tcw = mpTracker->GrabImageMonocular(imToFeed,timestamp,filename);
+    // Perform tracking
+    Sophus::SE3f Tcw = mpTracker->GrabImageMonocular(imToFeed, timestamp, filename);
 
+    // Launch grid builder once tracking has started and the map has content
+    if (!mpOccupancyBuilder && mpAtlas && mpAtlas->GetCurrentMap() &&
+        mpAtlas->GetCurrentMap()->KeyFramesInMap() > 0) {
+        std::cout << "[System] Starting OccupancyGridBuilder..." << std::endl;
+        mpOccupancyBuilder = new OccupancyGridBuilder(mpAtlas->GetCurrentMap());
+        mpOccupancyThread = new std::thread(&OccupancyGridBuilder::Run, mpOccupancyBuilder);
+    }
+
+    // Save state
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
@@ -472,6 +491,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 
     return Tcw;
 }
+//
 
 
 
@@ -523,27 +543,24 @@ void System::Shutdown()
 
     mpLocalMapper->RequestFinish();
     mpLoopCloser->RequestFinish();
-    /*if(mpViewer)
-    {
-        mpViewer->RequestFinish();
-        while(!mpViewer->isFinished())
-            usleep(5000);
-    }*/
 
-    // Wait until all thread have effectively stopped
-    /*while(!mpLocalMapper->isFinished() || !mpLoopCloser->isFinished() || mpLoopCloser->isRunningGBA())
-    {
-        if(!mpLocalMapper->isFinished())
-            cout << "mpLocalMapper is not finished" << endl;*/
-        /*if(!mpLoopCloser->isFinished())
-            cout << "mpLoopCloser is not finished" << endl;
-        if(mpLoopCloser->isRunningGBA()){
-            cout << "mpLoopCloser is running GBA" << endl;
-            cout << "break anyway..." << endl;
-            break;
-        }*/
-        /*usleep(5000);
-    }*/
+    // Step 1: Ask occupancy grid builder to finish
+    if(mpOccupancyBuilder) {
+        mpOccupancyBuilder->RequestFinish();
+    }
+
+    // Step 2: Wait for thread to finish and clean up thread object
+    if(mpOccupancyThread) {
+        mpOccupancyThread->join();
+        delete mpOccupancyThread;
+        mpOccupancyThread = nullptr;
+    }
+
+    // Step 3: Now it's safe to delete the builder object
+    if(mpOccupancyBuilder) {
+        delete mpOccupancyBuilder;
+        mpOccupancyBuilder = nullptr;
+    }
 
     if(!mStrSaveAtlasToFile.empty())
     {
@@ -551,15 +568,11 @@ void System::Shutdown()
         SaveAtlas(FileType::BINARY_FILE);
     }
 
-    /*if(mpViewer)
-        pangolin::BindToContext("ORB-SLAM2: Map Viewer");*/
-
 #ifdef REGISTER_TIMES
     mpTracker->PrintTimeStats();
 #endif
-
-
 }
+
 
 bool System::isShutDown() {
     unique_lock<mutex> lock(mMutexReset);

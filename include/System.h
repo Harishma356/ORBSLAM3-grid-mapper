@@ -39,6 +39,7 @@
 #include "Viewer.h"
 #include "ImuTypes.h"
 #include "Settings.h"
+#include "OccupancyGridBuilder.h"
 
 
 namespace ORB_SLAM3
@@ -79,7 +80,7 @@ class Tracking;
 class LocalMapping;
 class LoopClosing;
 class Settings;
-
+class OccupancyGridBuilder;
 class System
 {
 public:
@@ -229,6 +230,9 @@ private:
 
     FrameDrawer* mpFrameDrawer;
     MapDrawer* mpMapDrawer;
+    
+    std::thread* mpOccupancyThread;
+    ORB_SLAM3::OccupancyGridBuilder* mpOccupancyBuilder;
 
     // System threads: Local Mapping, Loop Closing, Viewer.
     // The Tracking thread "lives" in the main execution thread that creates the System object.

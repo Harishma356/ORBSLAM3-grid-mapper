@@ -490,5 +490,18 @@ void Map::PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc/*, map<long u
     mvpBackupMapPoints.clear();
 }
 
+//to get keyframe
+KeyFrame* Map::GetLastKeyFrame() {
+    std::unique_lock<std::mutex> lock(mMutexMap);
+    if (mspKeyFrames.empty())
+        return nullptr;
+
+    // Return the KeyFrame with the highest ID or the latest inserted
+    // Assuming KeyFrames are stored in std::set or similar
+    // So you can do:
+
+    return *(--mspKeyFrames.end());
+}
+
 
 } //namespace ORB_SLAM3

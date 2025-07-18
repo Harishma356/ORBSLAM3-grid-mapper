@@ -1,0 +1,5 @@
+Here, the docs folder contains the example output of global_occupancy_grid in
+
+both .png and .pgm format and respective yaml file. The example dataset used for this
+ 
+output is kitti dataset from their official website.

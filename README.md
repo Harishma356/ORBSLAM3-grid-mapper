@@ -44,34 +44,18 @@ Follow the original [ORB-SLAM3 repository](https://github.com/UZ-SLAMLab/ORB_SLA
 
 ## Tested Environments
 
-### Original ORB-SLAM3 (Officially Tested)
+| Component | Original ORB-SLAM3 | ORBSLAM3-grid-mapper |
+|-----------|-------------------|----------------------|
+| OS | Ubuntu 16.04 / 18.04 | Ubuntu 20.04.6 LTS |
+| Compiler | C++11 / C++0x | C++14 / C++17 |
+| GCC | GCC 5–7 | 9.4.0 |
+| CMake | — | 3.16.3 |
+| OpenCV | 3.2.0 | 4.3.0 |
+| Eigen | Eigen3 | 3.3.7 |
+| Pangolin | 2019–2020 era | Manually built (modern) |
+| Python | 2.7 | — |
 
-| Component | Version |
-|-----------|---------|
-| OS | Ubuntu 16.04 / 18.04 |
-| Compiler | C++11 / C++0x |
-| OpenCV | 3.2.0 |
-| Pangolin | 2019–2020 era |
-| Eigen | Eigen3 |
-| ROS | Melodic (optional) |
-| Python | 2.7 |
-| g2o | Bundled in Thirdparty |
-| DBoW2 | Bundled in Thirdparty |
-
-### ORBSLAM3-grid-mapper (This Repository)
-
-| Component | Version |
-|-----------|---------|
-| OS | Ubuntu 20.04.6 LTS |
-| GCC | 9.4.0 |
-| CMake | 3.16.3 |
-| OpenCV | 4.3.0 |
-| Eigen | 3.3.7 |
-| Pangolin | Manually built (modern) |
-| C++ | C++14 / C++17 |
-| g2o | Bundled in Thirdparty |
-| DBoW2 | Bundled in Thirdparty |
-| ROS | Melodic (optional) |
+> ROS, g2o, and DBoW2 remain unchanged from the original ORB-SLAM3 setup.
 
 ---
 
@@ -88,13 +72,13 @@ chmod +x build.sh
 
 ## Running
 
-Execution commands are identical to the original ORB-SLAM3. Example — Monocular TUM:
+Execution commands are identical to the original ORB-SLAM3. Example — Monocular KITTI:
 
 ```bash
-./Examples/Monocular/mono_tum \
+./Examples/Monocular/mono_kitti \
   Vocabulary/ORBvoc.txt \
-  Examples/Monocular/TUM1.yaml \
-  PATH_TO_SEQUENCE
+  Examples/Monocular/KITTI00-02.yaml \
+  PATH_TO_SEQUENCE_datainput
 ```
 
 Supported modes: Monocular · Stereo · RGB-D · Monocular-Inertial · Stereo-Inertial

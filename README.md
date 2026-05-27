@@ -128,12 +128,11 @@ Feel free to share feedback, maps, or questions on the thread.
 
 
 ## Docker
-A pre-built Docker image is available, the exact environment we developed this repository on — no manual dependency setup needed.
+A pre-built Docker image is available — no manual dependency setup needed.
 
-Follow below steps:
+```bash
+docker pull harishma356/orbslam3-grid-mapper:v1.0
+```
 
-> docker pull harishma356/orbslam3-grid-mapper:v1.0
-
-> cd ~/ORBSLAM3-grid-mapper
-
-> run the library execution command mentioned above
+Then run the library execution commands mentioned in the [Running](#running) section above.
+See [Docker Hub](https://hub.docker.com/r/harishma356/orbslam3-grid-mapper) for more details.

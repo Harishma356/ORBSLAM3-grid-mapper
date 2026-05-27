@@ -20,7 +20,7 @@ making the output directly compatible with **ROS2 navigation** workflows.
 
 ## Citation
 
-If you use this work, please star this repository and cite the original ORB-SLAM3:
+If you find this work useful, please consider starring this repository and cite the original ORB-SLAM3:
 
 ```bibtex
 @article{ORBSLAM3_TRO,

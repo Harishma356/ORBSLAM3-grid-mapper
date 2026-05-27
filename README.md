@@ -52,7 +52,7 @@ Follow the original [ORB-SLAM3 repository](https://github.com/UZ-SLAMLab/ORB_SLA
 | CMake | — | 3.16.3 |
 | OpenCV | 3.2.0 | 4.3.0 |
 | Eigen | Eigen3 | 3.3.7 |
-| Pangolin | 2019–2020 era | Manually built (modern) |
+| Pangolin | 2019–2020 era | Built from source (recent) |
 | Python | 2.7 | — |
 
 > ROS, g2o, and DBoW2 remain unchanged from the original ORB-SLAM3 setup.

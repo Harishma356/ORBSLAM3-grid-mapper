@@ -81,8 +81,6 @@ Execution commands are identical to the original ORB-SLAM3. Example — Monocula
   PATH_TO_SEQUENCE_datainput
 ```
 
-Supported modes: Monocular · Stereo · RGB-D · Monocular-Inertial · Stereo-Inertial
-
 ---
 
 ## Output

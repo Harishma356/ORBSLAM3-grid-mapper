@@ -1,0 +1,153 @@
+# =========================================
+# Build directories
+# =========================================
+build/
+cmake-build-debug/
+cmake-build-release/
+
+# ROS workspace generated folders
+install/
+log/
+devel/
+
+# =========================================
+# CMake generated files
+# =========================================
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+cmake_modules/
+
+# IDE-generated CMake settings
+CMakeLists.txt.user
+Examples/ROS/ORB_SLAM3/CMakeLists.txt.user
+CMakeLists_modified.txt
+
+# =========================================
+# Compiled binaries and libraries
+# =========================================
+*.o
+*.so
+*.a
+*.out
+*.exe
+*.bin
+lib/
+
+# Compiled example binaries (no extension, built into Examples/)
+Examples/RGB-D/rgbd_tum
+Examples/RGB-D/rgbd_realsense_D435i
+Examples/RGB-D-Inertial/rgbd_inertial_realsense_D435i
+Examples/Monocular/mono_realsense_D435i
+Examples/Monocular/mono_euroc
+Examples/Monocular/mono_kitti
+Examples/Monocular/mono_tum
+Examples/Monocular/mono_tum_vi
+Examples/Monocular/mono_realsense_t265
+Examples/Stereo/stereo_euroc
+Examples/Stereo/stereo_kitti
+Examples/Stereo/stereo_tum_vi
+Examples/Stereo/stereo_realsense_t265
+Examples/Stereo/stereo_realsense_D435i
+Examples/Monocular-Inertial/mono_inertial_euroc
+Examples/Monocular-Inertial/mono_inertial_tum_vi
+Examples/Monocular-Inertial/mono_inertial_realsense_t265
+Examples/Monocular-Inertial/mono_inertial_realsense_D435i
+Examples/Monocular-Inertial/mono_inertial_realsense_D435i_2
+Examples/Stereo-Inertial/stereo_inertial_euroc
+Examples/Stereo-Inertial/stereo_inertial_tum_vi
+Examples/Stereo-Inertial/stereo_inertial_realsense_t265
+Examples/Stereo-Inertial/stereo_inertial_realsense_D435i
+Examples/ROS/ORB_SLAM3/Mono
+Examples/ROS/ORB_SLAM3/Mono_Inertial
+Examples/ROS/ORB_SLAM3/MonoAR
+Examples/ROS/ORB_SLAM3/RGBD
+Examples/ROS/ORB_SLAM3/Stereo
+Examples/ROS/ORB_SLAM3/Stereo_Inertial
+Examples/Calibration/recorder_realsense_D435i
+Examples/Tests/viewer_dataset
+Examples/Tests/sophus_test
+
+# =========================================
+# Runtime-generated outputs
+# =========================================
+*.log
+*.osa
+
+# ORB-SLAM output trajectories
+KeyFrameTrajectory.txt
+CameraTrajectory.txt
+kf_*.txt
+f_*.txt
+
+# Timing/statistics files
+ExecMean.txt
+*/ExecMean.txt
+SessionInfo.txt
+Results_Euroc.txt
+LBA_Stats.txt
+LocalMapTimeStats.txt
+TrackLocalMapStats.txt
+TrackingTimeStats.txt
+Table_Euroc
+Table_TUMVI_rooms/
+
+# =========================================
+# Generated occupancy maps
+# =========================================
+map.yaml
+*.pgm
+*.png
+
+# =========================================
+# Vocabulary (extracted, large file)
+# =========================================
+Vocabulary/ORBvoc.txt
+
+# =========================================
+# Thirdparty generated build outputs
+# =========================================
+Thirdparty/DBoW2/build/
+Thirdparty/DBoW2/lib/
+Thirdparty/g2o/build/
+Thirdparty/g2o/lib/
+Thirdparty/g2o/config.h
+Thirdparty/Sophus/build/
+
+# =========================================
+# Python cache
+# =========================================
+__pycache__/
+*.pyc
+
+# =========================================
+# IDE / editor settings
+# =========================================
+.idea/
+.vscode/
+
+# =========================================
+# Personal / temporary files
+# =========================================
+my_settings.txt
+borrar/
+tmp/
+temp/
+
+# =========================================
+# Examples_old compiled binaries
+# =========================================
+Examples_old/Monocular-Inertial/mono_inertial_euroc_old
+Examples_old/Monocular-Inertial/mono_inertial_tum_vi_old
+Examples_old/Monocular/mono_euroc_old
+Examples_old/Monocular/mono_kitti_old
+Examples_old/Monocular/mono_tum_old
+Examples_old/Monocular/mono_tum_vi_old
+Examples_old/RGB-D/rgbd_tum_old
+Examples_old/Stereo-Inertial/stereo_inertial_euroc_old
+Examples_old/Stereo-Inertial/stereo_inertial_tum_vi_old
+Examples_old/Stereo/stereo_euroc_old
+Examples_old/Stereo/stereo_kitti_old
+Examples_old/Stereo/stereo_tum_vi_old

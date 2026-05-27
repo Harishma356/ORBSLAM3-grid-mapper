@@ -113,7 +113,15 @@ Comparison between direct sparse point flattening (general method) and the backg
 
 ## Acknowledgements
 
-This repository is a modified version of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) 
+This repository is a modified version of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)
 developed by Carlos Campos, Richard Elvira, Juan J. Gómez, José M. M. Montiel, 
 and Juan D. Tardós at the University of Zaragoza, extended with a 2D occupancy 
 grid generation thread that converts sparse map points into an occupancy grid map.
+
+
+## Community & Discussion
+
+Discussed on [ROS Discourse](https://discourse.openrobotics.org/t/orb-slam3-extension-real-time-sparse-map-to-occupancy-grid-yaml-pgm-for-ros-2-navigation/49158?u=harishma356) — also featured in 
+ROS News for the weeks of July 13th and July 21st, 2025.
+
+Feel free to share feedback, maps, or questions on the thread.

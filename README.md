@@ -133,5 +133,7 @@ A pre-built Docker image is available, the exact environment we developed this r
 Follow below steps:
 
 > docker pull harishma356/orbslam3-grid-mapper:v1.0
+
 > cd ~/ORBSLAM3-grid-mapper
+
 > run the library execution command mentioned above

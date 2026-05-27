@@ -125,3 +125,13 @@ Discussed on [ROS Discourse](https://discourse.openrobotics.org/t/orb-slam3-exte
 ROS News for the weeks of July 13th and July 21st, 2025.
 
 Feel free to share feedback, maps, or questions on the thread.
+
+
+## Docker
+A pre-built Docker image is available, the exact environment we developed this repository on — no manual dependency setup needed.
+
+Follow below steps:
+
+> docker pull harishma356/orbslam3-grid-mapper:v1.0
+> cd ~/ORBSLAM3-grid-mapper
+> run the library execution command mentioned above
